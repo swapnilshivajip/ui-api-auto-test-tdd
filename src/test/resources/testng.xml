@@ -1,0 +1,9 @@
+<suite name="Suite" parallel="classes" thread-count="2">
+    <test name="UI Tests" >
+        <parameter name="browser" value="${browser}" />
+        <classes>
+            <class name="tests.ui.LoginTest"/>
+            <class name="tests.ui.LoginTest2"/>
+        </classes>
+    </test>
+</suite>
