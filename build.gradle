@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+}
+
+group 'org.vidivici'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.testng:testng:7.10.2'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.25.0'
+    implementation 'io.rest-assured:rest-assured:5.5.0'
+    implementation 'com.aventstack:extentreports:5.0.9'
+    implementation 'commons-io:commons-io:2.17.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.18.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
+}
+
+test {
+    // use this command to run the tests: gradle clean test -DparallelCount=3 -Dbrowser=chrome
+    useTestNG() {
+        suites 'src/test/resources/testng.xml'
+
+        // Get parallel count and browser from system properties
+        def parallelCount = System.getProperty('parallelCount', '1')  // Default is 1 if not passed
+        def browser = System.getProperty('browser', 'chrome')  // Default is chrome if not passed
+        System.out.println("Parallel Count from CLI: "+parallelCount);
+        System.out.println("Browser from CLI: "+browser);
+
+        // Configure parallel execution
+        maxParallelForks = Integer.parseInt(parallelCount)
+
+        // Pass the browser as a system property to the tests
+        systemProperty 'browser', browser
+        systemProperty 'parallelCount', maxParallelForks
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+    }
+
+
+}
